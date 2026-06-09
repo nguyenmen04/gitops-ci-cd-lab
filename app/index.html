@@ -3,318 +3,518 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitOps Knowledge Hub</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <title>GitOps & CI/CD Documentation Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0b0f19;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --primary: #3b82f6;
-            --accent-argo: #10b981;
-            --accent-flux: #8b5cf6;
-            --accent-gh: #f59e0b;
-            --card-bg: rgba(30, 41, 59, 0.4);
-            --card-border: rgba(255, 255, 255, 0.1);
+            --bg-color: #0d1117;
+            --sidebar-bg: #161b22;
+            --text-main: #c9d1d9;
+            --text-muted: #8b949e;
+            --primary: #58a6ff;
+            --accent: #238636;
+            --border-color: #30363d;
+            --code-bg: #0d1117;
+            --surface: #21262d;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
         }
 
         body {
+            font-family: 'Inter', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
-            overflow-x: hidden;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
             line-height: 1.6;
         }
 
-        /* Dynamic Background */
-        .bg-mesh {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: -1;
-            background-image: 
-                radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.15), transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(16, 185, 129, 0.15), transparent 25%),
-                radial-gradient(circle at 50% 80%, rgba(139, 92, 246, 0.15), transparent 25%);
-            filter: blur(60px);
-            animation: mesh-movement 20s infinite alternate linear;
-        }
-
-        @keyframes mesh-movement {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.1); }
-        }
-
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0; width: 100%;
-            padding: 1.5rem 5%;
+        /* Sidebar Styles */
+        aside {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid var(--border-color);
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--card-border);
-            z-index: 100;
+            flex-direction: column;
+            overflow-y: auto;
         }
 
         .logo {
+            padding: 2rem 1.5rem;
             font-size: 1.5rem;
-            font-weight: 800;
-            background: linear-gradient(to right, #60a5fa, #34d399);
+            font-weight: 700;
+            color: #fff;
+            border-bottom: 1px solid var(--border-color);
+            background: linear-gradient(90deg, #58a6ff, #3fb950);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .version-badge {
-            padding: 0.5rem 1rem;
-            background: rgba(59, 130, 246, 0.2);
-            border: 1px solid rgba(59, 130, 246, 0.5);
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #60a5fa;
-            animation: pulse 2s infinite;
+        .nav-menu {
+            padding: 1.5rem 0;
+            list-style: none;
         }
 
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 0 20px;
-            margin-top: 60px;
-        }
-
-        .hero h1 {
-            font-size: 4rem;
-            font-weight: 800;
-            margin-bottom: 1.5rem;
-            line-height: 1.1;
-            letter-spacing: -1px;
-        }
-
-        .hero p {
-            font-size: 1.25rem;
+        .nav-item {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
             color: var(--text-muted);
-            max-width: 600px;
-            margin-bottom: 2rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
         }
 
-        /* Content Sections */
-        .section {
-            padding: 6rem 5%;
-            max-width: 1200px;
-            margin: 0 auto;
+        .nav-item:hover {
+            color: var(--text-main);
+            background-color: rgba(255, 255, 255, 0.05);
         }
 
-        .section-title {
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            text-align: center;
-            font-weight: 700;
-        }
-
-        /* Glassmorphism Cards */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .card {
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--card-border);
-            border-radius: 24px;
-            padding: 2.5rem;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            overflow: hidden;
-            opacity: 0;
-            transform: translateY(30px);
-        }
-
-        .card.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-            border-color: rgba(255,255,255,0.2);
-        }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 4px;
-            background: linear-gradient(to right, transparent, var(--primary));
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .card:hover::before { opacity: 1; }
-        .card.argo:hover::before { background: linear-gradient(to right, transparent, var(--accent-argo)); }
-        .card.flux:hover::before { background: linear-gradient(to right, transparent, var(--accent-flux)); }
-        .card.gh:hover::before { background: linear-gradient(to right, transparent, var(--accent-gh)); }
-
-        .icon {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-            display: inline-block;
-        }
-
-        .card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
+        .nav-item.active {
             color: #fff;
+            background-color: rgba(88, 166, 255, 0.1);
+            border-left-color: var(--primary);
         }
 
-        .card p, .card li {
-            color: var(--text-muted);
-            font-size: 1rem;
+        /* Main Content Styles */
+        main {
+            flex: 1;
+            overflow-y: auto;
+            padding: 3rem 5rem;
+            scroll-behavior: smooth;
+        }
+
+        .content-section {
+            display: none;
+            max-width: 900px;
+            margin: 0 auto;
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 2.5rem;
+            color: #fff;
             margin-bottom: 0.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
         }
 
-        .card ul {
-            list-style-type: none;
-            margin-top: 1rem;
+        h2 {
+            font-size: 1.75rem;
+            color: #fff;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
         }
 
-        .card li::before {
-            content: '→';
-            color: var(--primary);
-            margin-right: 8px;
-            font-weight: bold;
+        h3 {
+            font-size: 1.25rem;
+            color: #e6edf3;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
         }
 
-        /* specific colors */
-        .c-argo { color: var(--accent-argo); }
-        .c-flux { color: var(--accent-flux); }
-        .c-gh { color: var(--accent-gh); }
+        p { margin-bottom: 1rem; }
 
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+        ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+        li { margin-bottom: 0.5rem; }
+
+        strong { color: #fff; }
+
+        /* Code Blocks */
+        pre {
+            background-color: var(--sidebar-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            color: #e6edf3;
         }
 
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 3rem;
+        code {
+            font-family: 'Fira Code', monospace;
+            background-color: rgba(110, 118, 129, 0.4);
+            padding: 0.2em 0.4em;
+            border-radius: 6px;
+            font-size: 0.9em;
+        }
+
+        pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--surface);
+            color: #fff;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        /* Blockquotes */
+        blockquote {
+            border-left: 4px solid var(--primary);
+            padding-left: 1rem;
+            margin: 1.5rem 0;
             color: var(--text-muted);
-            border-top: 1px solid var(--card-border);
-            margin-top: 4rem;
+            background-color: rgba(88, 166, 255, 0.05);
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .version-tag {
+            display: inline-block;
+            background: var(--surface);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            border: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+            color: var(--primary);
         }
     </style>
 </head>
 <body>
-    <div class="bg-mesh"></div>
 
-    <nav>
-        <div class="logo">GitOps Hub</div>
-        <div class="version-badge">Version: v2.0 - GitOps Magic</div>
-    </nav>
+    <aside>
+        <div class="logo">GitOps & CI/CD<br>Knowledge Hub</div>
+        <ul class="nav-menu">
+            <li class="nav-item active" data-target="principles">📐 GitOps Principles</li>
+            <li class="nav-item" data-target="argocd">🚀 Argo CD</li>
+            <li class="nav-item" data-target="flux">🔄 Flux CD</li>
+            <li class="nav-item" data-target="actions">⚙️ GitHub Actions</li>
+        </ul>
+    </aside>
 
-    <section class="hero">
-        <h1>Cloud-Native<br><span style="color: var(--primary);">Continuous Delivery</span></h1>
-        <p>Trung tâm lưu trữ kiến thức GitOps. Tự động hóa hoàn toàn quy trình triển khai từ mã nguồn đến Kubernetes với các tiêu chuẩn cao nhất.</p>
-    </section>
+    <main>
+        <!-- GitOps Principles -->
+        <section id="principles" class="content-section active">
+            <div class="version-tag">Trích xuất từ: GitOps-Principles.md</div>
+            <h1>GitOps Principles</h1>
+            <blockquote>Nguồn: OpenGitOps.dev | CNCF GitOps Working Group</blockquote>
 
-    <section class="section" id="principles">
-        <h2 class="section-title">4 Nguyên Tắc Cốt Lõi (OpenGitOps)</h2>
-        <div class="grid">
-            <div class="card">
-                <div class="icon">📜</div>
-                <h3>1. Declarative</h3>
-                <p>Mô tả trạng thái "muốn gì" thay vì ra lệnh "làm gì". Ví dụ: Khai báo <code>replicas: 3</code> thay vì chạy lệnh <code>kubectl scale</code>.</p>
-            </div>
-            <div class="card">
-                <div class="icon">💾</div>
-                <h3>2. Versioned & Immutable</h3>
-                <p>Mọi thay đổi hạ tầng đều phải được lưu trong Git. Có lịch sử rõ ràng, biết ai sửa khi nào, và dễ dàng rollback bằng <code>git revert</code>.</p>
-            </div>
-            <div class="card">
-                <div class="icon">🧲</div>
-                <h3>3. Pulled Automatically</h3>
-                <p>Agent nằm bên trong Cluster (Argo/Flux) tự động kéo trạng thái từ Git về. An toàn hơn mô hình Push vì CI/CD không cần giữ chìa khóa của Cluster.</p>
-            </div>
-            <div class="card">
-                <div class="icon">🔄</div>
-                <h3>4. Continuously Reconciled</h3>
-                <p>Hệ thống tự động phát hiện sự sai lệch (Drift) giữa Git và Cluster. Nếu ai đó sửa tay trên Cluster, Agent sẽ tự động kéo về đúng trạng thái trên Git.</p>
-            </div>
-        </div>
-    </section>
+            <h2>1. OpenGitOps là gì?</h2>
+            <p><strong>Không phải tool</strong> — mà là bộ <strong>nguyên tắc</strong> định nghĩa "thế nào mới là GitOps".</p>
+<pre><code>OpenGitOps = Luật chơi
+Argo CD    = Công cụ tuân theo luật đó
+Flux CD    = Công cụ tuân theo luật đó</code></pre>
 
-    <section class="section" id="tools">
-        <h2 class="section-title">Công Cụ GitOps & CI/CD</h2>
-        <div class="grid">
-            <div class="card argo">
-                <div class="icon">🐙</div>
-                <h3 class="c-argo">Argo CD</h3>
-                <p>Công cụ GitOps có giao diện Web UI trực quan, mạnh mẽ và phổ biến nhất.</p>
-                <ul>
-                    <li>Quản lý trạng thái bằng <strong>Application</strong> CRD.</li>
-                    <li>Mô hình <strong>App of Apps</strong> để Bootstrap cụm K8s.</li>
-                    <li>Tự phục hồi drift với <strong>Self Heal</strong>.</li>
-                    <li>Trạng thái: Synced, OutOfSync, Healthy, Degraded.</li>
-                </ul>
-            </div>
+            <h2>2. Trước và sau GitOps</h2>
+<pre><code>❌ Trước (Push model):
+Dev → CI/CD Pipeline → kubectl apply → Kubernetes
+                            ↑
+                     pipeline cần giữ credential cluster
 
-            <div class="card flux">
-                <div class="icon">⚡</div>
-                <h3 class="c-flux">Flux CD</h3>
-                <p>Công cụ GitOps Kubernetes-native, thiết kế theo hướng phân tán với các Controller nhỏ.</p>
-                <ul>
-                    <li>Gồm các <strong>Source</strong>, <strong>Kustomize</strong>, và <strong>Helm</strong> Controller.</li>
-                    <li>Triển khai dễ dàng bằng lệnh <code>flux bootstrap github</code>.</li>
-                    <li>Tính năng <strong>Image Automation</strong> tự cập nhật image mới.</li>
-                </ul>
-            </div>
+✅ Sau (GitOps):
+Dev → git push → Git Repository
+                       ↑
+              Argo CD / Flux tự kéo về → Kubernetes</code></pre>
+            <p><strong>Điểm khác biệt:</strong> Không ai deploy trực tiếp vào cluster — chỉ sửa Git.</p>
 
-            <div class="card gh">
-                <div class="icon">⚙️</div>
-                <h3 class="c-gh">GitHub Actions</h3>
-                <p>Robot tự động hóa (CI) thực hiện Build và Test sau mỗi sự kiện Push/PR.</p>
-                <ul>
-                    <li>Cấu trúc: <strong>Workflow → Job → Step</strong>.</li>
-                    <li>Sử dụng <strong>Secrets</strong> để bảo mật thông tin.</li>
-                    <li>Tạo Docker Image và tự cập nhật mã Git cho Argo/Flux.</li>
-                </ul>
-            </div>
-        </div>
-    </section>
+            <h2>3. 4 Nguyên tắc cốt lõi</h2>
+            
+            <h3>Principle 1: Declarative — Mô tả trạng thái, không ra lệnh</h3>
+<pre><code># ✅ Declarative (GitOps) — Mô tả "muốn gì"
+spec:
+  replicas: 3
 
-    <footer>
-        <p>Built with ❤️ using GitHub Actions, Argo CD, and Kubernetes.</p>
-    </footer>
+# ❌ Imperative (không phải GitOps) — Ra lệnh "làm gì"
+kubectl create pod</code></pre>
+
+            <h3>Principle 2: Versioned & Immutable — Lưu trong Git, có lịch sử</h3>
+<pre><code>Git log:
+  commit A — replicas: 2  (Nguyen, 2025-06-01)
+  commit B — replicas: 5  (Tran,   2025-06-08)</code></pre>
+            <p>Mọi thay đổi <strong>phải đi qua Git commit</strong> — không ngoại lệ.</p>
+
+            <h3>Principle 3: Pulled Automatically — Cluster tự kéo, không phải Pipeline đẩy</h3>
+            <table>
+                <tr>
+                    <th>Tiêu chí</th>
+                    <th>Push (CI/CD cũ)</th>
+                    <th>Pull (GitOps)</th>
+                </tr>
+                <tr>
+                    <td>Credential</td>
+                    <td>CI/CD giữ key của cluster</td>
+                    <td>Cluster tự giữ key của Git</td>
+                </tr>
+                <tr>
+                    <td>Bảo mật</td>
+                    <td>Bị hack CI/CD là mất cả cluster</td>
+                    <td>Cluster chỉ cần chiều kéo ra ngoài</td>
+                </tr>
+            </table>
+
+            <h3>Principle 4: Continuously Reconciled — Tự sửa drift liên tục</h3>
+            <p>Nếu ai đó <code>kubectl scale</code> bằng tay trên cluster, Agent sẽ phát hiện sự sai lệch (Drift) và tự động kéo về trạng thái chuẩn trên Git.</p>
+        </section>
+
+        <!-- Argo CD -->
+        <section id="argocd" class="content-section">
+            <div class="version-tag">Trích xuất từ: ArgoCD.md</div>
+            <h1>Argo CD</h1>
+            <blockquote>GitOps Continuous Delivery tool for Kubernetes — Git là nguồn sự thật duy nhất.</blockquote>
+
+            <h2>1. Kiến trúc</h2>
+<pre><code>Web UI / CLI / CI
+       ↓
+  API Server  ──→  Repo Server (clone Git, render Helm/Kustomize)
+       ↓
+App Controller (so sánh Git vs Cluster → OutOfSync? → Sync)
+       ↓
+    Redis (cache)</code></pre>
+
+            <h2>2. Thuật ngữ cốt lõi</h2>
+            <table>
+                <tr>
+                    <th>Thuật ngữ</th>
+                    <th>Ý nghĩa</th>
+                </tr>
+                <tr>
+                    <td><strong>Application</strong></td>
+                    <td>CRD: "deploy cái gì, từ đâu, vào đâu"</td>
+                </tr>
+                <tr>
+                    <td><strong>Sync</strong></td>
+                    <td>Đưa cluster về đúng trạng thái Git</td>
+                </tr>
+                <tr>
+                    <td><strong>Drift</strong></td>
+                    <td>Cluster bị ai đó sửa tay → lệch với Git</td>
+                </tr>
+            </table>
+
+            <h2>3. Application — YAML mẫu</h2>
+<pre><code>apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: my-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/myorg/myrepo.git
+    targetRevision: HEAD   
+    path: k8s/my-app       
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: my-namespace
+  syncPolicy:
+    automated:
+      prune: true       # xóa resource khi Git xóa
+      selfHeal: true    # tự phục hồi khi bị sửa tay</code></pre>
+
+            <h2>4. Các Tính năng Nâng cao</h2>
+            <ul>
+                <li><strong>AppProject:</strong> Phân quyền đa team, giới hạn repo và cluster.</li>
+                <li><strong>ApplicationSet:</strong> Tạo hàng loạt Application tự động (rất tốt cho multi-cluster).</li>
+                <li><strong>App of Apps Pattern:</strong> Một Root App quản lý nhiều Child Apps để bootstrap toàn bộ cluster.</li>
+                <li><strong>Sync Waves & Hooks:</strong> Kiểm soát thứ tự deploy (ví dụ chạy DB Migration trước khi deploy App).</li>
+            </ul>
+        </section>
+
+        <!-- Flux CD -->
+        <section id="flux" class="content-section">
+            <div class="version-tag">Trích xuất từ: FluxCD.md</div>
+            <h1>Flux CD</h1>
+            <blockquote>Kubernetes-native GitOps tool | Cấu trúc phân tán với nhiều Controller</blockquote>
+
+            <h2>1. Kiến trúc — Các Controller</h2>
+            <table>
+                <tr>
+                    <th>Controller</th>
+                    <th>Nhiệm vụ</th>
+                    <th>CRD tương ứng</th>
+                </tr>
+                <tr>
+                    <td><strong>Source Controller</strong></td>
+                    <td>Clone Git/Helm repo, tạo artifact</td>
+                    <td><code>GitRepository</code>, <code>HelmRepository</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Kustomize Controller</strong></td>
+                    <td>Đọc YAML → apply vào cluster</td>
+                    <td><code>Kustomization</code></td>
+                </tr>
+                <tr>
+                    <td><strong>Helm Controller</strong></td>
+                    <td>Deploy/upgrade/rollback Helm chart</td>
+                    <td><code>HelmRelease</code></td>
+                </tr>
+            </table>
+
+            <h2>2. Ba CRD quan trọng nhất</h2>
+            
+            <h3>GitRepository</h3>
+<pre><code>apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: my-app
+spec:
+  interval: 1m
+  url: https://github.com/myorg/myrepo
+  ref:
+    branch: main</code></pre>
+
+            <h3>Kustomization</h3>
+<pre><code>apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+spec:
+  interval: 10m
+  path: ./k8s/apps/my-app
+  sourceRef:
+    kind: GitRepository
+    name: my-app
+  prune: true</code></pre>
+
+            <h2>3. Lệnh Bootstrap — Bước quan trọng nhất</h2>
+<pre><code>flux bootstrap github \
+  --owner=myorg \
+  --repository=fleet-infra \
+  --branch=main \
+  --path=clusters/my-cluster \
+  --personal</code></pre>
+            <p>Sau lệnh này, Flux tự động cài tất cả controllers lên cluster và thiết lập cầu nối Git ↔ Cluster.</p>
+
+            <h2>4. So sánh Flux vs Argo CD</h2>
+            <table>
+                <tr>
+                    <th>Tiêu chí</th>
+                    <th>Flux</th>
+                    <th>Argo CD</th>
+                </tr>
+                <tr>
+                    <td><strong>Kiến trúc</strong></td>
+                    <td>Nhiều controller nhỏ gọn</td>
+                    <td>1 ứng dụng lớn tập trung</td>
+                </tr>
+                <tr>
+                    <td><strong>Giao diện (UI)</strong></td>
+                    <td>Không có sẵn (dùng WeaveGitOps)</td>
+                    <td>Web UI cực kỳ mạnh và trực quan</td>
+                </tr>
+                <tr>
+                    <td><strong>Image auto-update</strong></td>
+                    <td>Có sẵn (Built-in)</td>
+                    <td>Cần cài thêm Image Updater</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- GitHub Actions -->
+        <section id="actions" class="content-section">
+            <div class="version-tag">Trích xuất từ: GitHubActions.md</div>
+            <h1>GitHub Actions</h1>
+            <blockquote>Robot tự động làm việc thay cho bạn sau mỗi sự kiện trên GitHub (CI/CD).</blockquote>
+
+            <h2>1. Bức tranh tổng thể</h2>
+<pre><code>Workflow (.github/workflows/ci.yml)
+    │
+    ├── Job: build        ← chạy trên máy riêng (Runner)
+    │     ├── Step: checkout code
+    │     ├── Step: npm install
+    │     └── Step: npm build
+    │
+    └── Job: deploy
+          ├── Step: login Docker
+          └── Step: push image</code></pre>
+
+            <h2>2. Cấu trúc file Workflow</h2>
+<pre><code>name: CI Pipeline
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4   # Action: clone code về
+      
+      - name: Install dependencies
+        run: npm install            # Script thường
+        
+      - name: Run tests
+        run: npm test</code></pre>
+
+            <h2>3. Tích hợp trong DevOps hiện đại</h2>
+<pre><code>Developer push code → GitHub
+    ↓
+GitHub Actions (CI)
+    ├── Build & Test
+    ├── Build Docker Image → Push Docker Hub
+    └── Update K8s manifest (Sửa file deployment.yaml)
+         ↓
+      Argo CD phát hiện thay đổi trên Git
+         ↓
+      Kéo code mới và Deploy vào Kubernetes</code></pre>
+
+            <h2>4. Các tính năng hữu ích</h2>
+            <ul>
+                <li><strong>Secrets:</strong> Lưu trữ key/token an toàn <code>${{ secrets.AWS_KEY }}</code>.</li>
+                <li><strong>Cache:</strong> Tăng tốc quá trình build bằng cách lưu lại dependencies.</li>
+                <li><strong>Matrix:</strong> Chạy test song song trên nhiều môi trường (nhiều version Node/Python).</li>
+                <li><strong>Self-hosted Runner:</strong> Chạy workflow trên máy chủ riêng của công ty thay vì máy của GitHub.</li>
+            </ul>
+        </section>
+    </main>
 
     <script>
-        // Intersection Observer for scroll animations
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.1 });
+        // Router Logic
+        const navItems = document.querySelectorAll('.nav-item');
+        const sections = document.querySelectorAll('.content-section');
 
-        document.querySelectorAll('.card').forEach((card, index) => {
-            card.style.transitionDelay = `${index * 0.1}s`;
-            observer.observe(card);
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                // Remove active classes
+                navItems.forEach(nav => nav.classList.remove('active'));
+                sections.forEach(section => section.classList.remove('active'));
+
+                // Add active class to clicked item
+                item.classList.add('active');
+
+                // Show corresponding section
+                const targetId = item.getAttribute('data-target');
+                document.getElementById(targetId).classList.add('active');
+                
+                // Scroll to top
+                document.querySelector('main').scrollTop = 0;
+            });
         });
     </script>
 </body>
