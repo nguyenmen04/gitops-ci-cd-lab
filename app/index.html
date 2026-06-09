@@ -1,237 +1,321 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GitOps Control Center</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg-color: #0f172a;
-      --card-bg: rgba(30, 41, 59, 0.7);
-      --primary: #3b82f6;
-      --accent: #10b981;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitOps Knowledge Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #3b82f6;
+            --accent-argo: #10b981;
+            --accent-flux: #8b5cf6;
+            --accent-gh: #f59e0b;
+            --card-bg: rgba(30, 41, 59, 0.4);
+            --card-border: rgba(255, 255, 255, 0.1);
+        }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
 
-    body {
-      background-color: var(--bg-color);
-      background-image:
-        radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.15) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.15) 0px, transparent 50%);
-      color: var(--text-main);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
 
-    .container {
-      max-width: 1000px;
-      width: 90%;
-      padding: 2rem;
-      text-align: center;
-      z-index: 10;
-    }
+        /* Dynamic Background */
+        .bg-mesh {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.15), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(16, 185, 129, 0.15), transparent 25%),
+                radial-gradient(circle at 50% 80%, rgba(139, 92, 246, 0.15), transparent 25%);
+            filter: blur(60px);
+            animation: mesh-movement 20s infinite alternate linear;
+        }
 
-    .header {
-      margin-bottom: 3rem;
-      animation: fadeInDown 1s ease-out;
-    }
+        @keyframes mesh-movement {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
 
-    h1 {
-      font-size: 3.5rem;
-      font-weight: 800;
-      background: linear-gradient(to right, #60a5fa, #34d399);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 0.5rem;
-      letter-spacing: -1px;
-    }
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0; width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--card-border);
+            z-index: 100;
+        }
 
-    p.subtitle {
-      color: var(--text-muted);
-      font-size: 1.2rem;
-      font-weight: 300;
-    }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #60a5fa, #34d399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-    .card-container {
-      display: flex;
-      gap: 2rem;
-      justify-content: center;
-      flex-wrap: wrap;
-      animation: fadeInUp 1s ease-out 0.3s backwards;
-    }
+        .version-badge {
+            padding: 0.5rem 1rem;
+            background: rgba(59, 130, 246, 0.2);
+            border: 1px solid rgba(59, 130, 246, 0.5);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #60a5fa;
+            animation: pulse 2s infinite;
+        }
 
-    .card {
-      background: var(--card-bg);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 20px;
-      padding: 2.5rem 1.5rem;
-      width: 300px;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            margin-top: 60px;
+        }
 
-    .card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
-      border-color: rgba(255, 255, 255, 0.2);
-    }
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+            letter-spacing: -1px;
+        }
 
-    .card-icon {
-      font-size: 3.5rem;
-      margin-bottom: 1.5rem;
-    }
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin-bottom: 2rem;
+        }
 
-    .card h2 {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-      font-weight: 600;
-    }
+        /* Content Sections */
+        .section {
+            padding: 6rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-    .card p {
-      color: var(--text-muted);
-      font-size: 1rem;
-      line-height: 1.6;
-    }
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            font-weight: 700;
+        }
 
-    .version-badge {
-      display: inline-block;
-      margin-top: 3.5rem;
-      padding: 0.75rem 2rem;
-      background: rgba(59, 130, 246, 0.1);
-      border: 1px solid rgba(59, 130, 246, 0.4);
-      border-radius: 9999px;
-      font-weight: 600;
-      font-size: 1.1rem;
-      color: #60a5fa;
-      animation: pulse 2s infinite;
-    }
+        /* Glassmorphism Cards */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
 
-    @keyframes fadeInDown {
-      from {
-        opacity: 0;
-        transform: translateY(-30px);
-      }
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
+        }
 
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            border-color: rgba(255,255,255,0.2);
+        }
 
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: linear-gradient(to right, transparent, var(--primary));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
 
-    @keyframes pulse {
-      0% {
-        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
-      }
+        .card:hover::before { opacity: 1; }
+        .card.argo:hover::before { background: linear-gradient(to right, transparent, var(--accent-argo)); }
+        .card.flux:hover::before { background: linear-gradient(to right, transparent, var(--accent-flux)); }
+        .card.gh:hover::before { background: linear-gradient(to right, transparent, var(--accent-gh)); }
 
-      70% {
-        box-shadow: 0 0 0 15px rgba(59, 130, 246, 0);
-      }
+        .icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+        }
 
-      100% {
-        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
-      }
-    }
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
 
-    .floating-circles {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      overflow: hidden;
-      pointer-events: none;
-    }
+        .card p, .card li {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
 
-    .circle {
-      position: absolute;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.03);
-      animation: float 15s infinite linear;
-      bottom: -200px;
-    }
+        .card ul {
+            list-style-type: none;
+            margin-top: 1rem;
+        }
 
-    @keyframes float {
-      0% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 1;
-      }
+        .card li::before {
+            content: '→';
+            color: var(--primary);
+            margin-right: 8px;
+            font-weight: bold;
+        }
 
-      100% {
-        transform: translateY(-120vh) rotate(360deg);
-        opacity: 0;
-      }
-    }
-  </style>
+        /* specific colors */
+        .c-argo { color: var(--accent-argo); }
+        .c-flux { color: var(--accent-flux); }
+        .c-gh { color: var(--accent-gh); }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--card-border);
+            margin-top: 4rem;
+        }
+    </style>
 </head>
-
 <body>
-  <div class="floating-circles">
-    <div class="circle" style="width: 150px; height: 150px; left: 10%; animation-duration: 25s;"></div>
-    <div class="circle" style="width: 250px; height: 250px; left: 75%; animation-duration: 30s; animation-delay: -5s;">
-    </div>
-    <div class="circle" style="width: 80px; height: 80px; left: 45%; animation-duration: 20s; animation-delay: -10s;">
-    </div>
-    <div class="circle" style="width: 120px; height: 120px; left: 30%; animation-duration: 22s; animation-delay: -2s;">
-    </div>
-  </div>
+    <div class="bg-mesh"></div>
 
-  <div class="container">
-    <div class="header">
-      <h1>GitOps Control Center</h1>
-      <p class="subtitle">Cloud-Native Continuous Delivery Pipeline</p>
-    </div>
+    <nav>
+        <div class="logo">GitOps Hub</div>
+        <div class="version-badge">Version: v2.0 - GitOps Magic</div>
+    </nav>
 
-    <div class="card-container">
-      <div class="card">
-        <div class="card-icon">🐙</div>
-        <h2>GitHub Actions</h2>
-        <p>Automated CI pipeline that builds and pushes container images seamlessly.</p>
-      </div>
+    <section class="hero">
+        <h1>Cloud-Native<br><span style="color: var(--primary);">Continuous Delivery</span></h1>
+        <p>Trung tâm lưu trữ kiến thức GitOps. Tự động hóa hoàn toàn quy trình triển khai từ mã nguồn đến Kubernetes với các tiêu chuẩn cao nhất.</p>
+    </section>
 
-      <div class="card">
-        <div class="card-icon">☸️</div>
-        <h2>Kubernetes</h2>
-        <p>Orchestrating the application workload with high availability and self-healing.</p>
-      </div>
+    <section class="section" id="principles">
+        <h2 class="section-title">4 Nguyên Tắc Cốt Lõi (OpenGitOps)</h2>
+        <div class="grid">
+            <div class="card">
+                <div class="icon">📜</div>
+                <h3>1. Declarative</h3>
+                <p>Mô tả trạng thái "muốn gì" thay vì ra lệnh "làm gì". Ví dụ: Khai báo <code>replicas: 3</code> thay vì chạy lệnh <code>kubectl scale</code>.</p>
+            </div>
+            <div class="card">
+                <div class="icon">💾</div>
+                <h3>2. Versioned & Immutable</h3>
+                <p>Mọi thay đổi hạ tầng đều phải được lưu trong Git. Có lịch sử rõ ràng, biết ai sửa khi nào, và dễ dàng rollback bằng <code>git revert</code>.</p>
+            </div>
+            <div class="card">
+                <div class="icon">🧲</div>
+                <h3>3. Pulled Automatically</h3>
+                <p>Agent nằm bên trong Cluster (Argo/Flux) tự động kéo trạng thái từ Git về. An toàn hơn mô hình Push vì CI/CD không cần giữ chìa khóa của Cluster.</p>
+            </div>
+            <div class="card">
+                <div class="icon">🔄</div>
+                <h3>4. Continuously Reconciled</h3>
+                <p>Hệ thống tự động phát hiện sự sai lệch (Drift) giữa Git và Cluster. Nếu ai đó sửa tay trên Cluster, Agent sẽ tự động kéo về đúng trạng thái trên Git.</p>
+            </div>
+        </div>
+    </section>
 
-      <div class="card">
-        <div class="card-icon">🚀</div>
-        <h2>Argo / Flux</h2>
-        <p>Continuous reconciliation ensuring the cluster perfectly matches the Git state.</p>
-      </div>
-    </div>
+    <section class="section" id="tools">
+        <h2 class="section-title">Công Cụ GitOps & CI/CD</h2>
+        <div class="grid">
+            <div class="card argo">
+                <div class="icon">🐙</div>
+                <h3 class="c-argo">Argo CD</h3>
+                <p>Công cụ GitOps có giao diện Web UI trực quan, mạnh mẽ và phổ biến nhất.</p>
+                <ul>
+                    <li>Quản lý trạng thái bằng <strong>Application</strong> CRD.</li>
+                    <li>Mô hình <strong>App of Apps</strong> để Bootstrap cụm K8s.</li>
+                    <li>Tự phục hồi drift với <strong>Self Heal</strong>.</li>
+                    <li>Trạng thái: Synced, OutOfSync, Healthy, Degraded.</li>
+                </ul>
+            </div>
 
-    <div class="version-badge">
-      Current Version: v1.0
-    </div>
-  </div>
+            <div class="card flux">
+                <div class="icon">⚡</div>
+                <h3 class="c-flux">Flux CD</h3>
+                <p>Công cụ GitOps Kubernetes-native, thiết kế theo hướng phân tán với các Controller nhỏ.</p>
+                <ul>
+                    <li>Gồm các <strong>Source</strong>, <strong>Kustomize</strong>, và <strong>Helm</strong> Controller.</li>
+                    <li>Triển khai dễ dàng bằng lệnh <code>flux bootstrap github</code>.</li>
+                    <li>Tính năng <strong>Image Automation</strong> tự cập nhật image mới.</li>
+                </ul>
+            </div>
+
+            <div class="card gh">
+                <div class="icon">⚙️</div>
+                <h3 class="c-gh">GitHub Actions</h3>
+                <p>Robot tự động hóa (CI) thực hiện Build và Test sau mỗi sự kiện Push/PR.</p>
+                <ul>
+                    <li>Cấu trúc: <strong>Workflow → Job → Step</strong>.</li>
+                    <li>Sử dụng <strong>Secrets</strong> để bảo mật thông tin.</li>
+                    <li>Tạo Docker Image và tự cập nhật mã Git cho Argo/Flux.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>Built with ❤️ using GitHub Actions, Argo CD, and Kubernetes.</p>
+    </footer>
+
+    <script>
+        // Intersection Observer for scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.card').forEach((card, index) => {
+            card.style.transitionDelay = `${index * 0.1}s`;
+            observer.observe(card);
+        });
+    </script>
 </body>
-
 </html>
