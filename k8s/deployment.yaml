@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
         - name: web
-          image: nguyenmen/gitops-web:v1.20260609071100
+          image: nguyenmen/gitops-web:v1.20260609142130
           ports:
             - containerPort: 80
