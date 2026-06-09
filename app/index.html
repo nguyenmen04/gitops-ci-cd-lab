@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitOps Control Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --primary: #3b82f6;
+            --accent: #10b981;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.15) 0px, transparent 50%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 90%;
+            padding: 2rem;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .header {
+            margin-bottom: 3rem;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #60a5fa, #34d399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            letter-spacing: -1px;
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+
+        .card-container {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 0.3s backwards;
+        }
+
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2.5rem 1.5rem;
+            width: 300px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .card-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .version-badge {
+            display: inline-block;
+            margin-top: 3.5rem;
+            padding: 0.75rem 2rem;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #60a5fa;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(59, 130, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+        }
+        
+        .floating-circles {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.03);
+            animation: float 15s infinite linear;
+            bottom: -200px;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-circles">
+        <div class="circle" style="width: 150px; height: 150px; left: 10%; animation-duration: 25s;"></div>
+        <div class="circle" style="width: 250px; height: 250px; left: 75%; animation-duration: 30s; animation-delay: -5s;"></div>
+        <div class="circle" style="width: 80px; height: 80px; left: 45%; animation-duration: 20s; animation-delay: -10s;"></div>
+        <div class="circle" style="width: 120px; height: 120px; left: 30%; animation-duration: 22s; animation-delay: -2s;"></div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>GitOps Control Center</h1>
+            <p class="subtitle">Cloud-Native Continuous Delivery Pipeline</p>
+        </div>
+
+        <div class="card-container">
+            <div class="card">
+                <div class="card-icon">🐙</div>
+                <h2>GitHub Actions</h2>
+                <p>Automated CI pipeline that builds and pushes container images seamlessly.</p>
+            </div>
+            
+            <div class="card">
+                <div class="card-icon">☸️</div>
+                <h2>Kubernetes</h2>
+                <p>Orchestrating the application workload with high availability and self-healing.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-icon">🚀</div>
+                <h2>Argo / Flux</h2>
+                <p>Continuous reconciliation ensuring the cluster perfectly matches the Git state.</p>
+            </div>
+        </div>
+
+        <div class="version-badge">
+            🚀 Current Version: v1.0
+        </div>
+    </div>
+</body>
+</html>
