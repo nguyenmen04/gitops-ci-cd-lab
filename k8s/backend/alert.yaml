@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: high-error-rate-alert
+  namespace: default
+  labels:
+    release: kube-prometheus-stack
+spec:
+  groups:
+  - name: gitops-backend.rules
+    rules:
+    - alert: HighErrorRate
+      expr: sum(rate(flask_http_request_total{status="500"}[1m])) / sum(rate(flask_http_request_total[1m])) > 0.05
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "App đang dính lỗi rất cao!"
+        description: "Tỉ lệ lỗi 500 đang vượt quá 5% trong 1 phút qua."

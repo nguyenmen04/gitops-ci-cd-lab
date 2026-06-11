@@ -11,6 +11,21 @@ spec:
     targetRevision: 65.1.1
     helm:
       values: |
+        alertmanager:
+          config:
+            global:
+              smtp_smarthost: 'smtp.gmail.com:587'
+              smtp_from: 'your-email@gmail.com'
+              smtp_auth_username: 'your-email@gmail.com'
+              smtp_auth_password: 'app-password-here'
+              smtp_require_tls: true
+            route:
+              receiver: 'my-email'
+              group_by: ['alertname']
+            receivers:
+            - name: 'my-email'
+              email_configs:
+              - to: 'your-email@gmail.com'
         prometheus:
           prometheusSpec:
             serviceMonitorSelectorNilUsesHelmValues: false
