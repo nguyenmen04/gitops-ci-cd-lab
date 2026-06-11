@@ -17,6 +17,6 @@ spec:
     spec:
       containers:
         - name: backend
-          image: nguyenmen/gitops-backend:latest
+          image: nguyenmen/gitops-backend:v1.20260611041002
           ports:
             - containerPort: 3000
