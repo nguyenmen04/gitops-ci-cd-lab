@@ -232,3 +232,40 @@ Ví dụ trong thư mục `k8s/` của project này:
 - Trong file `service.yaml`: Thêm `argocd.argoproj.io/sync-wave: "2"` (Chạy sau khi Deployment đã sẵn sàng).
 
 ArgoCD sẽ tự động hiểu và áp dụng theo đúng thứ tự này, giúp hệ thống không bị lỗi rớt mạng trong quá trình cập nhật phiên bản thực tế.
+
+---
+
+## 📊 6. Observability & Progressive Delivery (Buổi Chiều)
+
+Phần này mở rộng hệ thống với khả năng đo lường (Observability) và phát hành an toàn (Canary Rollout).
+
+### Lab 7: Cài đặt Prometheus và Argo Rollouts qua GitOps
+**Mục đích:** Cài đặt công cụ giám sát (Prometheus) và công cụ triển khai Canary (Argo Rollouts) tự động.
+
+**Cách thực hiện:**
+1. Khai báo ứng dụng `kube-prometheus-stack` và `argo-rollouts` trong `argocd-apps/`.
+2. Push lên Git để Root App tự động nhận diện và cài đặt.
+
+### Lab 8: Theo dõi Metrics với ServiceMonitor
+**Mục đích:** Để Prometheus tự động thu thập thông số (metrics) từ ứng dụng backend.
+
+**Cách thực hiện:**
+1. Trong file code ứng dụng (`server.js`), ứng dụng đã được cấu hình thư viện `prom-client` và tạo endpoint `/metrics`.
+2. Tạo file `servicemonitor.yaml` để chỉ định Prometheus cào dữ liệu từ cổng `http` của ứng dụng.
+3. Lên giao diện Prometheus gõ query `flask_http_request_total` để xem đồ thị lượng truy cập thực tế.
+
+### Lab 9: Phát hành an toàn với Canary Rollout
+**Mục đích:** Tung phiên bản mới từ từ (ví dụ 25% trước) để nếu có lỗi thì không ảnh hưởng toàn bộ người dùng.
+
+**Cách thực hiện:**
+1. Chuyển đổi `Deployment` thành `Rollout` (CRD của Argo Rollouts).
+2. Thêm cấu hình `strategy.canary` với các bước phân bổ traffic:
+   ```yaml
+   strategy:
+     canary:
+       steps:
+         - setWeight: 25
+         - pause: { duration: 10s } # Dừng 10s rồi tự chạy tiếp (Hoặc pause: {} để chờ người duyệt thủ công)
+   ```
+3. Đổi version của ứng dụng và `git commit`, `git push`.
+4. ArgoCD sẽ chỉ cấp 25% traffic cho bản mới. Đợi 10 giây (hoặc đợi lệnh `promote`), nó sẽ tăng lên 100%. Nếu có lỗi, bạn có thể chạy `abort` để quay về bản cũ ngay lập tức.
