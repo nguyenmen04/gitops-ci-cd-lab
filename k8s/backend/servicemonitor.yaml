@@ -1,0 +1,15 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: gitops-backend-monitor
+  namespace: default
+  labels:
+    release: kube-prometheus-stack # Rất quan trọng để Prometheus tự động quét
+spec:
+  selector:
+    matchLabels:
+      app: gitops-backend
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 15s

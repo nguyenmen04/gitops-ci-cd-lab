@@ -1,0 +1,38 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: gitops-backend
+  namespace: default
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: gitops-backend
+  template:
+    metadata:
+      labels:
+        app: gitops-backend
+    spec:
+      containers:
+        - name: backend
+          image: nguyenmen/gitops-backend:v1.20260611041002
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+              name: http
+          env:
+            - name: ERROR_RATE
+              value: "0"
+            - name: VERSION
+              value: "v1"
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 3000
+  strategy:
+    canary:
+      steps:
+        - setWeight: 25
+        - pause: {} # Dừng vô hạn để chờ Promote bằng tay

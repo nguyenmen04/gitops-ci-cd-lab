@@ -45,9 +45,9 @@ jobs:
       - name: Update image tags in manifests
         run: |
           sed -i "s|image: .*/gitops-web:.*|image: ${{ secrets.DOCKER_USERNAME }}/gitops-web:${{ steps.version.outputs.TAG }}|" k8s/frontend/deployment.yaml
-          sed -i "s|image: .*/gitops-backend:.*|image: ${{ secrets.DOCKER_USERNAME }}/gitops-backend:${{ steps.version.outputs.TAG }}|" k8s/backend/deployment.yaml
+          sed -i "s|image: .*/gitops-backend:.*|image: ${{ secrets.DOCKER_USERNAME }}/gitops-backend:${{ steps.version.outputs.TAG }}|" k8s/backend/rollout.yaml
           git config user.email "github-actions@github.com"
           git config user.name "GitHub Actions"
-          git add k8s/frontend/deployment.yaml k8s/backend/deployment.yaml
+          git add k8s/frontend/deployment.yaml k8s/backend/rollout.yaml
           git commit -m "CI: update images to ${{ steps.version.outputs.TAG }}"
           git push
