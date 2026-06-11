@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: gitops-web
   namespace: default
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   selector:
     app: gitops-web
