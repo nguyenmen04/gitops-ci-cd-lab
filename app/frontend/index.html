@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GitOps & CI/CD Documentation Hub</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
     <style>
         :root {
             --bg-color: #0d1117;
@@ -100,8 +103,15 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* Typography */
@@ -127,12 +137,23 @@
             margin-bottom: 1rem;
         }
 
-        p { margin-bottom: 1rem; }
+        p {
+            margin-bottom: 1rem;
+        }
 
-        ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
-        li { margin-bottom: 0.5rem; }
+        ul,
+        ol {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+        }
 
-        strong { color: #fff; }
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        strong {
+            color: #fff;
+        }
 
         /* Code Blocks */
         pre {
@@ -168,7 +189,8 @@
             font-size: 0.95rem;
         }
 
-        th, td {
+        th,
+        td {
             padding: 0.75rem 1rem;
             border: 1px solid var(--border-color);
             text-align: left;
@@ -207,6 +229,7 @@
         }
     </style>
 </head>
+
 <body>
 
     <aside>
@@ -220,6 +243,12 @@
     </aside>
 
     <main>
+        <!-- Backend Status Box -->
+        <div id="backend-status-box" style="background: rgba(88, 166, 255, 0.1); border: 1px solid var(--primary); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+            <h3 style="margin-top: 0; color: var(--primary);">🔌 Backend Connection Status</h3>
+            <p id="backend-msg">Connecting to Backend API...</p>
+        </div>
+
         <!-- GitOps Principles -->
         <section id="principles" class="content-section active">
             <div class="version-tag">Trích xuất từ: GitOps-Principles.md</div>
@@ -227,13 +256,14 @@
             <blockquote>Nguồn: OpenGitOps.dev | CNCF GitOps Working Group</blockquote>
 
             <h2>1. OpenGitOps là gì?</h2>
-            <p><strong>Không phải tool</strong> — mà là bộ <strong>nguyên tắc</strong> định nghĩa "thế nào mới là GitOps".</p>
-<pre><code>OpenGitOps = Luật chơi
+            <p><strong>Không phải tool</strong> — mà là bộ <strong>nguyên tắc</strong> định nghĩa "thế nào mới là
+                GitOps".</p>
+            <pre><code>OpenGitOps = Luật chơi
 Argo CD    = Công cụ tuân theo luật đó
 Flux CD    = Công cụ tuân theo luật đó</code></pre>
 
             <h2>2. Trước và sau GitOps</h2>
-<pre><code>❌ Trước (Push model):
+            <pre><code>❌ Trước (Push model):
 Dev → CI/CD Pipeline → kubectl apply → Kubernetes
                             ↑
                      pipeline cần giữ credential cluster
@@ -245,9 +275,9 @@ Dev → git push → Git Repository
             <p><strong>Điểm khác biệt:</strong> Không ai deploy trực tiếp vào cluster — chỉ sửa Git.</p>
 
             <h2>3. 4 Nguyên tắc cốt lõi</h2>
-            
+
             <h3>Principle 1: Declarative — Mô tả trạng thái, không ra lệnh</h3>
-<pre><code># ✅ Declarative (GitOps) — Mô tả "muốn gì"
+            <pre><code># ✅ Declarative (GitOps) — Mô tả "muốn gì"
 spec:
   replicas: 3
 
@@ -255,7 +285,7 @@ spec:
 kubectl create pod</code></pre>
 
             <h3>Principle 2: Versioned & Immutable — Lưu trong Git, có lịch sử</h3>
-<pre><code>Git log:
+            <pre><code>Git log:
   commit A — replicas: 2  (Nguyen, 2025-06-01)
   commit B — replicas: 5  (Tran,   2025-06-08)</code></pre>
             <p>Mọi thay đổi <strong>phải đi qua Git commit</strong> — không ngoại lệ.</p>
@@ -280,7 +310,8 @@ kubectl create pod</code></pre>
             </table>
 
             <h3>Principle 4: Continuously Reconciled — Tự sửa drift liên tục</h3>
-            <p>Nếu ai đó <code>kubectl scale</code> bằng tay trên cluster, Agent sẽ phát hiện sự sai lệch (Drift) và tự động kéo về trạng thái chuẩn trên Git.</p>
+            <p>Nếu ai đó <code>kubectl scale</code> bằng tay trên cluster, Agent sẽ phát hiện sự sai lệch (Drift) và tự
+                động kéo về trạng thái chuẩn trên Git.</p>
         </section>
 
         <!-- Argo CD -->
@@ -290,7 +321,7 @@ kubectl create pod</code></pre>
             <blockquote>GitOps Continuous Delivery tool for Kubernetes — Git là nguồn sự thật duy nhất.</blockquote>
 
             <h2>1. Kiến trúc</h2>
-<pre><code>Web UI / CLI / CI
+            <pre><code>Web UI / CLI / CI
        ↓
   API Server  ──→  Repo Server (clone Git, render Helm/Kustomize)
        ↓
@@ -319,7 +350,7 @@ App Controller (so sánh Git vs Cluster → OutOfSync? → Sync)
             </table>
 
             <h2>3. Application — YAML mẫu</h2>
-<pre><code>apiVersion: argoproj.io/v1alpha1
+            <pre><code>apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: my-app
@@ -342,8 +373,10 @@ spec:
             <ul>
                 <li><strong>AppProject:</strong> Phân quyền đa team, giới hạn repo và cluster.</li>
                 <li><strong>ApplicationSet:</strong> Tạo hàng loạt Application tự động (rất tốt cho multi-cluster).</li>
-                <li><strong>App of Apps Pattern:</strong> Một Root App quản lý nhiều Child Apps để bootstrap toàn bộ cluster.</li>
-                <li><strong>Sync Waves & Hooks:</strong> Kiểm soát thứ tự deploy (ví dụ chạy DB Migration trước khi deploy App).</li>
+                <li><strong>App of Apps Pattern:</strong> Một Root App quản lý nhiều Child Apps để bootstrap toàn bộ
+                    cluster.</li>
+                <li><strong>Sync Waves & Hooks:</strong> Kiểm soát thứ tự deploy (ví dụ chạy DB Migration trước khi
+                    deploy App).</li>
             </ul>
         </section>
 
@@ -378,9 +411,9 @@ spec:
             </table>
 
             <h2>2. Ba CRD quan trọng nhất</h2>
-            
+
             <h3>GitRepository</h3>
-<pre><code>apiVersion: source.toolkit.fluxcd.io/v1
+            <pre><code>apiVersion: source.toolkit.fluxcd.io/v1
 kind: GitRepository
 metadata:
   name: my-app
@@ -391,7 +424,7 @@ spec:
     branch: main</code></pre>
 
             <h3>Kustomization</h3>
-<pre><code>apiVersion: kustomize.toolkit.fluxcd.io/v1
+            <pre><code>apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 spec:
   interval: 10m
@@ -402,7 +435,7 @@ spec:
   prune: true</code></pre>
 
             <h2>3. Lệnh Bootstrap — Bước quan trọng nhất</h2>
-<pre><code>flux bootstrap github \
+            <pre><code>flux bootstrap github \
   --owner=myorg \
   --repository=fleet-infra \
   --branch=main \
@@ -442,7 +475,7 @@ spec:
             <blockquote>Robot tự động làm việc thay cho bạn sau mỗi sự kiện trên GitHub (CI/CD).</blockquote>
 
             <h2>1. Bức tranh tổng thể</h2>
-<pre><code>Workflow (.github/workflows/ci.yml)
+            <pre><code>Workflow (.github/workflows/ci.yml)
     │
     ├── Job: build        ← chạy trên máy riêng (Runner)
     │     ├── Step: checkout code
@@ -454,7 +487,7 @@ spec:
           └── Step: push image</code></pre>
 
             <h2>2. Cấu trúc file Workflow</h2>
-<pre><code>name: CI Pipeline
+            <pre><code>name: CI Pipeline
 
 on:
   push:
@@ -473,7 +506,7 @@ jobs:
         run: npm test</code></pre>
 
             <h2>3. Tích hợp trong DevOps hiện đại</h2>
-<pre><code>Developer push code → GitHub
+            <pre><code>Developer push code → GitHub
     ↓
 GitHub Actions (CI)
     ├── Build & Test
@@ -489,7 +522,8 @@ GitHub Actions (CI)
                 <li><strong>Secrets:</strong> Lưu trữ key/token an toàn <code>${{ secrets.AWS_KEY }}</code>.</li>
                 <li><strong>Cache:</strong> Tăng tốc quá trình build bằng cách lưu lại dependencies.</li>
                 <li><strong>Matrix:</strong> Chạy test song song trên nhiều môi trường (nhiều version Node/Python).</li>
-                <li><strong>Self-hosted Runner:</strong> Chạy workflow trên máy chủ riêng của công ty thay vì máy của GitHub.</li>
+                <li><strong>Self-hosted Runner:</strong> Chạy workflow trên máy chủ riêng của công ty thay vì máy của
+                    GitHub.</li>
             </ul>
         </section>
     </main>
@@ -511,11 +545,34 @@ GitHub Actions (CI)
                 // Show corresponding section
                 const targetId = item.getAttribute('data-target');
                 document.getElementById(targetId).classList.add('active');
-                
+
                 // Scroll to top
                 document.querySelector('main').scrollTop = 0;
             });
         });
+
+        // Fetch Backend API
+        async function fetchBackendStatus() {
+            try {
+                // Giả định backend chạy ở NodePort 30081 trên localhost
+                const response = await fetch('http://localhost:30081/api/status');
+                const data = await response.json();
+                document.getElementById('backend-msg').innerHTML = 
+                    `✅ <strong>Connected!</strong><br>` +
+                    `Message: ${data.message}<br>` +
+                    `Architecture: ${data.architecture}<br>` +
+                    `Time: ${data.timestamp}`;
+            } catch (error) {
+                document.getElementById('backend-msg').innerHTML = 
+                    `❌ <strong>Failed to connect to Backend API</strong><br>` +
+                    `Please make sure the Backend is running on port 30081.<br>` +
+                    `Error: ${error.message}`;
+            }
+        }
+
+        // Run fetch on load
+        fetchBackendStatus();
     </script>
 </body>
+
 </html>

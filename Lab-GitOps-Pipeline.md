@@ -202,3 +202,33 @@ git push
 - **Triệu chứng:** Push code xong web không đổi ngay lập tức, phải bấm Refresh trên Argo CD mới đổi.
 - **Nguyên nhân:** Theo mặc định, Argo CD 3 phút mới đi kiểm tra GitHub một lần. Đồng thời GitHub Actions cũng tốn 1-2 phút để build Docker Image.
 - **Cách khắc phục:** Nếu muốn tự động hoàn toàn, bạn cứ việc push code rồi đi pha ly cafe (5 phút), quay lại tự động web đã được cập nhật. Đừng nóng vội bấm Refresh nếu bạn muốn test "sức mạnh tự động" của hệ thống.
+
+---
+
+## 🌟 5. Bổ sung GitOps Nâng Cao (App of Apps & Sync Waves)
+
+### Lab 5: Mô hình App of Apps
+**Mục đích:** Quản lý hàng loạt ứng dụng tự động thay vì phải tạo thủ công trên giao diện Argo CD.
+
+**Cách thực hiện:**
+1. Tạo thư mục `argocd-apps/` để chứa các file định nghĩa của các Application con.
+2. Tạo file `argocd-apps/web-app.yaml` (đây là định nghĩa của App con `gitops-web-app`).
+3. Tạo file **Root Application** (`root.yaml`) ở thư mục ngoài cùng. Mục tiêu của nó là theo dõi thư mục `argocd-apps/`.
+4. Apply Root App (Bootstrap) duy nhất 1 lần bằng tay:
+   ```bash
+   kubectl apply -f root.yaml
+   ```
+> **Trở lại câu hỏi: Khi nào nó tạo ra 1 app mới?**
+> Rất đơn giản! Kể từ sau bước 4, nếu bạn muốn tạo thêm App thứ 2 (ví dụ `api-app`, `database-app`...), bạn **chỉ cần tạo file YAML ném vào thư mục `argocd-apps/` và gõ `git push`**. 
+> Root App đang "nhìn" vào thư mục đó, nó sẽ tự động phát hiện có file mới và lập tức sinh ra App mới trên hệ thống K8s mà bạn không cần phải đụng tay vào gõ `kubectl` nữa.
+
+### Lab 6: Đồng bộ theo thứ tự (Sync Waves)
+**Mục đích:** Quy định ArgoCD phải tạo tài nguyên nào trước, tài nguyên nào sau (Ví dụ: Pod/Deployment chạy xong xuôi rồi mới tạo Service/LoadBalancer để điều hướng người dùng).
+
+**Cách thực hiện:**
+Thêm Annotation `argocd.argoproj.io/sync-wave` vào metadata của file YAML. Các wave có số nhỏ sẽ được tạo trước.
+Ví dụ trong thư mục `k8s/` của project này:
+- Trong file `deployment.yaml`: Thêm `argocd.argoproj.io/sync-wave: "1"` (Ưu tiên chạy trước).
+- Trong file `service.yaml`: Thêm `argocd.argoproj.io/sync-wave: "2"` (Chạy sau khi Deployment đã sẵn sàng).
+
+ArgoCD sẽ tự động hiểu và áp dụng theo đúng thứ tự này, giúp hệ thống không bị lỗi rớt mạng trong quá trình cập nhật phiên bản thực tế.

@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gitops-backend
+  namespace: default
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gitops-backend
+  template:
+    metadata:
+      labels:
+        app: gitops-backend
+    spec:
+      containers:
+        - name: backend
+          image: nguyenmen/gitops-backend:latest
+          ports:
+            - containerPort: 3000
