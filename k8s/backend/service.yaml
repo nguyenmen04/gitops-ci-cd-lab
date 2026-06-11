@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: gitops-backend
   namespace: default
+  labels:
+    app: gitops-backend
   annotations:
     argocd.argoproj.io/sync-wave: "2"
 spec:
