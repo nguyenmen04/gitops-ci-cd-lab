@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: gitops-web-app
+  name: gitops-frontend-app
   namespace: argocd
 spec:
   project: default
