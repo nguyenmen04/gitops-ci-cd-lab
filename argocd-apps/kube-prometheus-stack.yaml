@@ -17,7 +17,7 @@ spec:
               smtp_smarthost: 'smtp.gmail.com:587'
               smtp_from: 'nguyenthimen190504@gmail.com'
               smtp_auth_username: 'nguyenthimen190504@gmail.com'
-              smtp_auth_password: 'nguyenmen190504@
+              smtp_auth_password: 'nguyenmen190504@'
               smtp_require_tls: true
             route:
               receiver: 'my-email'
