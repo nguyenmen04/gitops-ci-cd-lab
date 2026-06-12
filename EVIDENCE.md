@@ -1,4 +1,3 @@
-<img width="728" height="330" alt="image" src="https://github.com/user-attachments/assets/e29563d1-f12f-4d45-b3f9-24438e90dc3b" /># Báo Cáo Challenge: Ship Smartly
 
 > **Phân tích yêu cầu bài tập (Bạn có thể xoá phần này trước khi nộp):**
 > 1. **Mọi thứ phải chuẩn GitOps:** Mọi cấu hình (từ app, canary, đến cảnh báo lỗi) đều phải được viết thành file YAML và đẩy lên GitHub.
