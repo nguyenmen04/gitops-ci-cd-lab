@@ -1,4 +1,4 @@
-# Báo Cáo Challenge: Ship Smartly
+<img width="728" height="330" alt="image" src="https://github.com/user-attachments/assets/e29563d1-f12f-4d45-b3f9-24438e90dc3b" /># Báo Cáo Challenge: Ship Smartly
 
 > **Phân tích yêu cầu bài tập (Bạn có thể xoá phần này trước khi nộp):**
 > 1. **Mọi thứ phải chuẩn GitOps:** Mọi cấu hình (từ app, canary, đến cảnh báo lỗi) đều phải được viết thành file YAML và đẩy lên GitHub.
@@ -34,10 +34,9 @@ sum(rate(flask_http_request_total{namespace="default"}[2m]))
 
 *Khi phiên bản mới (với ERROR_RATE cao) được đẩy lên, Argo Rollouts chia traffic cho bản Canary. Tuy nhiên AnalysisTemplate đã tự động phân tích và phát hiện tỉ lệ lỗi vượt ngưỡng 5%, hệ thống lập tức tự động Abort để bảo vệ người dùng.*
 
-![alt text](image-1.png)
+<img width="1291" height="144" alt="image" src="https://github.com/user-attachments/assets/147aa24d-25f6-4073-a865-ec7ff5380927" />
 
-![alt text](image-2.png)
-*(Ghi chú: Thay thế bằng ảnh chụp màn hình lệnh `kubectl argo rollouts get rollout...` hiển thị trạng thái Degraded/Aborted, hoặc chèn link video)*
+<img width="1263" height="117" alt="image" src="https://github.com/user-attachments/assets/e2980bbc-f1a9-4f9c-b533-ffbcd0c84b6e" />
 
 ---
 
@@ -45,8 +44,8 @@ sum(rate(flask_http_request_total{namespace="default"}[2m]))
 
 *Hệ thống AlertManager đã quét và phát hiện SLO bị vi phạm do lỗi tăng vọt, và đã tự động bắn cảnh báo (Firing) về email cá nhân.*
 
-![Ảnh chụp màn hình Email cảnh báo](link-anh-email-alert-cua-ban-vao-day.png)
-*(Ghi chú: Thay thế bằng ảnh chụp màn hình hòm thư email của bạn)*
+<img width="1868" height="900" alt="image" src="https://github.com/user-attachments/assets/d7219ae6-99da-4495-aa8b-dbc96f499bce" />
+
 
 ---
 
@@ -54,5 +53,8 @@ sum(rate(flask_http_request_total{namespace="default"}[2m]))
 
 *Thực hiện lệnh `git revert` commit bị lỗi, đẩy lên GitHub. Hệ thống ArgoCD tự động nhận diện và đồng bộ lại trạng thái cũ hoàn toàn dưới 5 phút.*
 
-![Ảnh chứng minh Git Revert và ArgoCD Synced](link-anh-rollback-cua-ban-vao-day.png)
-*(Ghi chú: Thay thế bằng ảnh chụp Terminal khi gõ lệnh revert và ảnh ArgoCD xanh lá)*
+<img width="728" height="330" alt="image" src="https://github.com/user-attachments/assets/3d1fae45-bb19-4f36-97d5-d294e0d3d1cf" />
+
+<img width="1605" height="772" alt="image" src="https://github.com/user-attachments/assets/bdfe240f-7f2c-45c1-8b25-3e05aff99f82" />
+
+
