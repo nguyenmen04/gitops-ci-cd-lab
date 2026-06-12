@@ -23,6 +23,7 @@ spec:
               receiver: 'my-email'
               group_by: ['alertname']
             receivers:
+            - name: 'null'
             - name: 'my-email'
               email_configs:
               - to: 'nguyenthimen190504@gmail.com'
