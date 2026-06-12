@@ -32,6 +32,9 @@ sum(rate(flask_http_request_total{namespace="default"}[2m]))
 - Câu lệnh này tính **tỉ lệ phần trăm các request bị lỗi (mã 500)** trên tổng số tất cả các request trong vòng 2 phút qua. 
 - **Ngưỡng an toàn (Threshold):** `successCondition: result < 0.05` (Đúng với định nghĩa SLO ở trên). Nếu tỉ lệ lỗi vượt qua 5% (Vi phạm SLO), hệ thống `AnalysisTemplate` sẽ lập tức đánh lỗi (Failed) và Argo Rollouts sẽ tự động huỷ bỏ quá trình cập nhật.
 
+  <img width="1861" height="920" alt="image" src="https://github.com/user-attachments/assets/3153046f-6495-4da3-9f55-a7944177a2c7" />
+
+
 ### 2.2 Cấu hình Cảnh báo (PrometheusRule)
 Để AlertManager phát hiện và gửi Email, mình định nghĩa `PrometheusRule`:
 
