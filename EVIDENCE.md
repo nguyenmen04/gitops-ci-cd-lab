@@ -34,7 +34,9 @@ sum(rate(flask_http_request_total{namespace="default"}[2m]))
 
 *Khi phiên bản mới (với ERROR_RATE cao) được đẩy lên, Argo Rollouts chia traffic cho bản Canary. Tuy nhiên AnalysisTemplate đã tự động phân tích và phát hiện tỉ lệ lỗi vượt ngưỡng 5%, hệ thống lập tức tự động Abort để bảo vệ người dùng.*
 
-![Ảnh chứng minh Canary Auto-abort](link-anh-hoac-video-auto-abort-cua-ban-vao-day.png)
+![alt text](image-1.png)
+
+![alt text](image-2.png)
 *(Ghi chú: Thay thế bằng ảnh chụp màn hình lệnh `kubectl argo rollouts get rollout...` hiển thị trạng thái Degraded/Aborted, hoặc chèn link video)*
 
 ---
